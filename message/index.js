@@ -1574,7 +1574,6 @@ module.exports = msgHandler = async (bocchi = new Client(), message) => {
             break
             case 'simi':
                 if (!isRegistered) return await bocchi.reply(from, ind.notRegistered(), id)
-                if (!isGroupMsg) return await bocchi.reply(from, ind.groupOnly(), id)
                 if (!q) return await bocchi.reply(from, ind.wrongFormat(), id)
                 fun.simi(q)
                   .then(async ({ success }) => {
@@ -1608,6 +1607,21 @@ module.exports = msgHandler = async (bocchi = new Client(), message) => {
                 await bocchi.reply(from, ind.wait(), id)
                 console.log('Creating Pornhub text...')
                 await bocchi.sendFileFromUrl(from, `https://api.vhtear.com/pornlogo?text1=${kiri}&text2=${kanan}&apikey=${config.vhtear}`, 'ph.jpg', '', id)
+                    .then(() => console.log('Success creating image!'))
+                    .catch(async (err) => {
+                        console.error(err)
+                        await bocchi.reply(from, 'Error!', id)
+                    })
+            break
+            case 'quotemaker':
+                if (!isRegistered) return await bocchi.reply(from, ind.notRegistered(), id)
+                if (!q) return await bocchi.reply(from, ind.wrongFormat(), id)
+                const kata = q.substring(0, q.indexOf('|') - 1)
+                const author = q.substring(q.indexOf('|') + 2, q.lastIndexOf('|') - 1)
+                const tema = q.substring(q.lastIndexOf('|') + 2)
+                await bocchi.reply(from, ind.wait(), id)
+                console.log('Creating Pornhub text...')
+                await bocchi.sendFileFromUrl(from, `https://terhambar.com/aw/qts/?kata=${kata}&author=${author}&tipe=${tema}`, 'qm.jpg', '', id)
                     .then(() => console.log('Success creating image!'))
                     .catch(async (err) => {
                         console.error(err)
