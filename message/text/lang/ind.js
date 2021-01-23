@@ -468,11 +468,6 @@ Mengirim info spesifikasi HP dari GSMArena.
 Aliases: -
 Usage: *${prefix}gsmarena* model_hp
 
-8. *${prefix}receipt*
-Mengirim resep makanan.
-Aliases: *resep*
-Usage: *${prefix}receipt* nama_makanan
-
 9. *${prefix}ytsearch*
 Mengirim hasil pencarian di YouTube.
 Aliases: *yts*
@@ -809,6 +804,11 @@ Usage: *${prefix}ffbanner* teks1 | teks2
 Membuat logo karakter Free Fire.
 Aliases: -
 Usage: *${prefix}fflogo* teks1 | teks2
+
+20. *${prefix}quotemaker*
+Membuat Quotes sendiri.
+Aliases: -
+Usage: *${prefix}quotemaker* teks | author | tema
 
 _Index of [6]_
     `
