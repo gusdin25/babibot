@@ -1615,18 +1615,22 @@ module.exports = msgHandler = async (bocchi = new Client(), message) => {
             break
             case 'quotemaker':
                 if (!isRegistered) return await bocchi.reply(from, ind.notRegistered(), id)
-                if (!q) return await bocchi.reply(from, ind.wrongFormat(), id)
+                if (!q.includes('|')) return await bocchi.reply(from, ind.wrongFormat(), id)
                 const kata = q.substring(0, q.indexOf('|') - 1)
                 const author = q.substring(q.indexOf('|') + 2, q.lastIndexOf('|') - 1)
                 const tema = q.substring(q.lastIndexOf('|') + 2)
+                const ppPhRaw = await bocchi.getProfilePicFromServer(sender.id)
+                if (ppPhRaw === undefined) {
+                    var ppPh = errorImg
+                } else {
+                    var ppPh = ppPhRaw
+                }
+                const dataPpPh = await bent('buffer')(ppPh)
+                const linkPpPh = await uploadImages(dataPpPh, `${sender.id}_ph`)
                 await bocchi.reply(from, ind.wait(), id)
-                console.log('Creating Pornhub text...')
-                await bocchi.sendFileFromUrl(from, `https://terhambar.com/aw/qts/?kata=${kata}&author=${author}&tipe=${tema}`, 'qm.jpg', '', id)
-                    .then(() => console.log('Success creating image!'))
-                    .catch(async (err) => {
-                        console.error(err)
-                        await bocchi.reply(from, 'Error!', id)
-                    })
+                const preproccessPh = await axios.get(`https://terhambar.com/aw/qts/?kata=${kata}&author=${author}&tipe=${tema}`)
+                await bocchi.sendFileFromUrl(from, preproccessPh.data.message, 'qm.jpg', '', id)
+                console.log('Success creating image!')
             break
             case 'blackpink':
                 if (!isRegistered) return await bocchi.reply(from, ind.notRegistered(), id)
