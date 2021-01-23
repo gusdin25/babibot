@@ -1613,25 +1613,6 @@ module.exports = msgHandler = async (bocchi = new Client(), message) => {
                         await bocchi.reply(from, 'Error!', id)
                     })
             break
-            case 'quotemaker':
-                if (!isRegistered) return await bocchi.reply(from, ind.notRegistered(), id)
-                if (!q.includes('|')) return await bocchi.reply(from, ind.wrongFormat(), id)
-                const kata = q.substring(0, q.indexOf('|') - 1)
-                const author = q.substring(q.indexOf('|') + 2, q.lastIndexOf('|') - 1)
-                const tema = q.substring(q.lastIndexOf('|') + 2)
-                const ppPhRaw = await bocchi.getProfilePicFromServer(sender.id)
-                if (ppPhRaw === undefined) {
-                    var ppPh = errorImg
-                } else {
-                    var ppPh = ppPhRaw
-                }
-                const dataPpPh = await bent('buffer')(ppPh)
-                const linkPpPh = await uploadImages(dataPpPh, `${sender.id}_ph`)
-                await bocchi.reply(from, ind.wait(), id)
-                const preproccessPh = await axios.get(`https://terhambar.com/aw/qts/?kata=${kata}&author=${author}&tipe=${tema}`)
-                await bocchi.sendFileFromUrl(from, preproccessPh.data.message, 'qm.jpg', '', id)
-                console.log('Success creating image!')
-            break
             case 'blackpink':
                 if (!isRegistered) return await bocchi.reply(from, ind.notRegistered(), id)
                 if (!q) return await bocchi.reply(from, ind.wrongFormat(), id)
@@ -1793,6 +1774,25 @@ module.exports = msgHandler = async (bocchi = new Client(), message) => {
                 await bocchi.reply(from, ind.wait(), id)
                 const preproccessPh = await axios.get(`https://nekobot.xyz/api/imagegen?type=phcomment&image=${linkPpPh}&text=${commentPh}&username=${usernamePh}`)
                 await bocchi.sendFileFromUrl(from, preproccessPh.data.message, 'ph.jpg', '', id)
+                console.log('Success creating image!')
+            break
+            case 'quotemaker':
+                if (!isRegistered) return await bocchi.reply(from, ind.notRegistered(), id)
+                if (!q.includes('|')) return await bocchi.reply(from, ind.wrongFormat(), id)
+                const kata = q.substring(0, q.indexOf('|') - 1)
+                const author = q.substring(q.indexOf('|') + 2, q.lastIndexOf('|') - 1)
+                const tema = q.substring(q.lastIndexOf('|') + 2)
+                const ppqmRaw = await bocchi.getProfilePicFromServer(sender.id)
+                if (ppqmRaw === undefined) {
+                    var ppqm = errorImg
+                } else {
+                    var ppqm = ppqmRaw
+                }
+                const dataPpqm = await bent('buffer')(ppqm)
+                const linkPpqm = await uploadImages(dataPpqm, `${sender.id}_qm`)
+                await bocchi.reply(from, ind.wait(), id)
+                const preproccessqm = await axios.get(`https://terhambar.com/aw/qts/?kata=${kata}&author=${author}&tipe=${tema}`)
+                await bocchi.sendFileFromUrl(from, preproccessqm.data.result, 'qm.jpg', '', id)
                 console.log('Success creating image!')
             break
 
